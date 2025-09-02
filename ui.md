@@ -1,75 +1,64 @@
+Screen: Dashboard
 General Layout
 
 Background: White
 
-Header
+Top Navigation Bar:
 
-Logo/Icon: Circular loading/spinner–like icon (blue gradient style).
+Left: Circular spinner logo (blue gradient style, same as sign-up)
 
-App Name: HD (bold, black, centered)
+Title: Dashboard (black, medium-weight, centered left)
 
-Title: Sign up (Large, bold, black, centered)
+Right: Sign Out link (blue, clickable, aligned right)
 
-Subtitle: Sign up to enjoy the feature of HD (Small, light gray, centered)
+Welcome Card
 
-Input Fields(same as white background color)
+Card Style: White background, rounded corners, light gray border, subtle shadow
 
-Your Name
+Content:
 
-Placeholder/Label: "Your Name"
+Text 1 (Heading): Welcome, Jonas Khanwald ! (black, bold, slightly larger than body text)
 
-Value: "Jonas Khanwald"
+Text 2 (Subtext): Email: xxxxxx@xxxx.com (gray/black, regular font size)
 
-Style: Rounded rectangle text field, light border, gray text for placeholder.
+Primary Action Button
 
-Date of Birth
+Text: Create Note
 
-Placeholder/Label: "Date of Birth"
-
-Value: "11 December 1997"
-
-Left Icon: Calendar icon (black/gray)
-
-Style: Same rounded rectangle, light border.
-
-Email
-
-Placeholder/Label: "Email"
-
-Value: "jonas_kahnwald@gmail.com"
-
-Style: Same rounded rectangle, light border.
-
-OTP
-
-Placeholder/Label: "OTP"
-
-Suffix Icon: Eye/Visibility toggle (gray)
-
-Style: Rounded rectangle with blue border (active state)
-
-Button
-
-Text: Sign up
+Button Color: Solid blue (#007BFF-like)
 
 Text Color: White
 
-Button Color: Solid Blue (#007BFF-like)
+Shape: Wide, rounded rectangle
 
-Shape: Rounded rectangle, wide (full width of form)
+Placement: Centered under the welcome card with spacing
 
-Footer
+Notes Section
 
-Text: Already have an account?? (gray/black, small, centered)
+Heading: Notes (black, bold, left-aligned)
 
-Link: Sign in (blue, underlined/clickable)
+Note List Items:
+
+Style: White background, rounded corners, gray border, subtle shadow
+
+Text: "Note 1", "Note 2" (black, left-aligned)
+
+Icon: Trash/Delete (black outline, right-aligned, clickable)
+
+Layout: Flex row → text on left, delete button on right
+
+Spacing: Small gap between notes
 
 UX Notes
 
-Inputs have rounded corners.
+The hierarchy is clean:
 
-Consistent padding/margins between fields.
+Top bar → navigation
 
-Blue button is the primary CTA (Call to Action).
+Welcome card → personalization
 
-Secondary action (Sign in) is less emphasized but clearly visible.
+Create Note button → main CTA
+
+Notes list → user’s stored content
+
+Good separation of sections with white cards and shadows.

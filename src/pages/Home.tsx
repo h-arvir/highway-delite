@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { z } from 'zod'
 import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../contexts/AuthContext'
@@ -15,8 +15,14 @@ export default function HomePage() {
   const [notes, setNotes] = useState<Note[]>([])
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+  const [showComposer, setShowComposer] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+
+  const displayName = useMemo(() => {
+    const meta: any = user?.user_metadata ?? {}
+    return meta.full_name || meta.name || (user?.email ? user.email.split('@')[0] : 'there')
+  }, [user])
 
   useEffect(() => {
     if (!user) return
@@ -46,6 +52,7 @@ export default function HomePage() {
     setTitle('')
     setContent('')
     await fetchNotes()
+    setShowComposer(false)
   }
 
   const deleteNote = async (id: string) => {
@@ -62,52 +69,69 @@ export default function HomePage() {
   return (
     <div className="page">
       <div className="container">
-        <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-          <div>
-            <h2 style={{ margin: 0 }}>Notes</h2>
-            <div style={{ color: '#6b7280', fontSize: 14 }}>Signed in as {user?.email}</div>
+        {/* Top Navigation Bar */}
+        <nav className="topbar">
+          <div className="brand">
+            <div className="logo-circle small" aria-hidden />
+            <span className="nav-title">Dashboard</span>
           </div>
-          <button className="button secondary" onClick={signOut}>Sign out</button>
-        </header>
+          <button className="link-button" onClick={signOut}>Sign Out</button>
+        </nav>
 
-        {error && (
-          <div className="error" style={{ marginBottom: 12 }}>{error}</div>
-        )}
+        {error && <div className="error" style={{ marginBottom: 12 }}>{error}</div>}
 
-        <section className="card" style={{ marginBottom: 16 }}>
-          <div style={{ display: 'grid', gap: 8 }}>
-            <input
-              className="input rounded"
-              type="text"
-              placeholder="Note title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            <textarea
-              className="input rounded"
-              placeholder="Write your note..."
-              rows={4}
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              style={{ resize: 'vertical' }}
-            />
-            <button className="button primary" onClick={createNote} disabled={loading}>
-              {loading ? 'Saving...' : 'Add note'}
-            </button>
-          </div>
+        {/* Welcome Card */}
+        <section className="card welcome-card">
+          <div className="welcome-heading">Welcome, {displayName}!</div>
+          <div className="welcome-subtext">Email: {user?.email}</div>
         </section>
 
-        <ul style={{ display: 'grid', gap: 12, listStyle: 'none', padding: 0, margin: 0 }}>
+        {/* Primary Action */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}>
+          <button className="button primary wide" style={{ maxWidth: 420 }} onClick={() => setShowComposer((s) => !s)}>
+            Create Note
+          </button>
+        </div>
+
+        {/* Note Composer (toggle) */}
+        {showComposer && (
+          <section className="card" style={{ marginBottom: 16 }}>
+            <div style={{ display: 'grid', gap: 8 }}>
+              <input
+                className="input rounded"
+                type="text"
+                placeholder="Note title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+              <textarea
+                className="input rounded"
+                placeholder="Write your note..."
+                rows={4}
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                style={{ resize: 'vertical' }}
+              />
+              <button className="button primary" onClick={createNote} disabled={loading}>
+                {loading ? 'Saving...' : 'Add note'}
+              </button>
+            </div>
+          </section>
+        )}
+
+        {/* Notes Section */}
+        <h3 className="section-heading">Notes</h3>
+        <ul className="notes-list">
           {notes.map((n) => (
-            <li key={n.id} className="card">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <li key={n.id} className="card note-item">
+              <div className="note-row">
                 <strong>{n.title}</strong>
-                <button className="button secondary" onClick={() => deleteNote(n.id)} style={{ color: '#b91c1c' }}>
-                  Delete
+                <button className="icon-button" onClick={() => deleteNote(n.id)} title="Delete note" aria-label="Delete note">
+                  🗑️
                 </button>
               </div>
-              <div style={{ whiteSpace: 'pre-wrap', marginTop: 6 }}>{n.content}</div>
-              <div style={{ color: '#6b7280', fontSize: 12, marginTop: 6 }}>{new Date(n.created_at).toLocaleString()}</div>
+              <div className="note-content">{n.content}</div>
+              <div className="note-meta">{new Date(n.created_at).toLocaleString()}</div>
             </li>
           ))}
         </ul>
