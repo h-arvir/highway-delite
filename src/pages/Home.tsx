@@ -25,7 +25,11 @@ export default function HomePage() {
 
   const fetchNotes = async () => {
     setError(null)
-    const { data, error } = await supabase.from('notes').select('*').eq('user_id', user!.id).order('created_at', { ascending: false })
+    const { data, error } = await supabase
+      .from('notes')
+      .select('*')
+      .eq('user_id', user!.id)
+      .order('created_at', { ascending: false })
     if (error) return setError(error.message)
     setNotes((data as Note[]) ?? [])
   }
@@ -56,57 +60,58 @@ export default function HomePage() {
   }
 
   return (
-    <div style={{ maxWidth: 700, margin: '24px auto', padding: 16 }}>
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-        <div>
-          <h2>Notes</h2>
-          <div style={{ color: '#666', fontSize: 14 }}>Signed in as {user?.email}</div>
-        </div>
-        <button onClick={signOut}>Sign out</button>
-      </header>
+    <div className="page">
+      <div className="container">
+        <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+          <div>
+            <h2 style={{ margin: 0 }}>Notes</h2>
+            <div style={{ color: '#6b7280', fontSize: 14 }}>Signed in as {user?.email}</div>
+          </div>
+          <button className="button secondary" onClick={signOut}>Sign out</button>
+        </header>
 
-      {error && (
-        <div style={{ background: '#fee2e2', color: '#991b1b', padding: 8, borderRadius: 6, marginBottom: 8 }}>
-          {error}
-        </div>
-      )}
+        {error && (
+          <div className="error" style={{ marginBottom: 12 }}>{error}</div>
+        )}
 
-      <section style={{ marginBottom: 16 }}>
-        <div style={{ display: 'grid', gap: 8 }}>
-          <input
-            type="text"
-            placeholder="Note title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            style={{ padding: 10, borderRadius: 6, border: '1px solid #ccc' }}
-          />
-          <textarea
-            placeholder="Write your note..."
-            rows={4}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            style={{ padding: 10, borderRadius: 6, border: '1px solid #ccc', resize: 'vertical' }}
-          />
-          <button onClick={createNote} disabled={loading}>
-            {loading ? 'Saving...' : 'Add note'}
-          </button>
-        </div>
-      </section>
+        <section className="card" style={{ marginBottom: 16 }}>
+          <div style={{ display: 'grid', gap: 8 }}>
+            <input
+              className="input rounded"
+              type="text"
+              placeholder="Note title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <textarea
+              className="input rounded"
+              placeholder="Write your note..."
+              rows={4}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              style={{ resize: 'vertical' }}
+            />
+            <button className="button primary" onClick={createNote} disabled={loading}>
+              {loading ? 'Saving...' : 'Add note'}
+            </button>
+          </div>
+        </section>
 
-      <ul style={{ display: 'grid', gap: 12 }}>
-        {notes.map((n) => (
-          <li key={n.id} style={{ border: '1px solid #e5e7eb', borderRadius: 8, padding: 12 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <strong>{n.title}</strong>
-              <button onClick={() => deleteNote(n.id)} style={{ color: '#b91c1c' }}>
-                Delete
-              </button>
-            </div>
-            <div style={{ whiteSpace: 'pre-wrap', marginTop: 6 }}>{n.content}</div>
-            <div style={{ color: '#777', fontSize: 12, marginTop: 6 }}>{new Date(n.created_at).toLocaleString()}</div>
-          </li>
-        ))}
-      </ul>
+        <ul style={{ display: 'grid', gap: 12, listStyle: 'none', padding: 0, margin: 0 }}>
+          {notes.map((n) => (
+            <li key={n.id} className="card">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <strong>{n.title}</strong>
+                <button className="button secondary" onClick={() => deleteNote(n.id)} style={{ color: '#b91c1c' }}>
+                  Delete
+                </button>
+              </div>
+              <div style={{ whiteSpace: 'pre-wrap', marginTop: 6 }}>{n.content}</div>
+              <div style={{ color: '#6b7280', fontSize: 12, marginTop: 6 }}>{new Date(n.created_at).toLocaleString()}</div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   )
 }

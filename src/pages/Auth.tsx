@@ -93,7 +93,7 @@ export default function AuthPage() {
 
               <label className="field-label" htmlFor="dob">Date of Birth</label>
               <div className="input-with-icon">
-                <span className="left-icon" aria-hidden>📅</span>
+                 
                 <input
                   id="dob"
                   className="input rounded with-icon"
