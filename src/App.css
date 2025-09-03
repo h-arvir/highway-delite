@@ -1,22 +1,157 @@
 /* Basic layout reset for our app */
 #root {
   max-width: 100%;
+  width: 100%; /* ensure full-width so background stays white */
   margin: 0 auto;
   padding: 0;
   text-align: left;
 }
 
 /* Simple responsive helpers */
+.page { background: #ffffff; min-height: 100vh; }
 .container { max-width: 820px; margin: 0 auto; padding: 16px; }
-.card { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 16px; }
-.input { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; }
-.button { padding: 10px 14px; border-radius: 8px; border: 1px solid #d1d5db; background: #111827; color: #fff; }
+.card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; }
+.input { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 12px; }
+.button { padding: 12px 16px; border-radius: 12px; border: 1px solid #d1d5db; background: #111827; color: #fff; }
 .button.secondary { background: #f3f4f6; color: #111827; }
-.error { background: #fee2e2; color: #991b1b; padding: 8px; border-radius: 6px; }
+.error { background: #fee2e2; color: #991b1b; padding: 8px; border-radius: 8px; }
 
 @media (prefers-color-scheme: dark) {
-  .card { background: #111827; border-color: #374151; }
-  .input { background: #0b1220; border-color: #374151; color: #f3f4f6; }
+  .card { background: #ffffff; border-color: #374151; }
+  /* Keep inputs legible on white backgrounds */
+  .input { background: #ffffff; border-color: #d1d5db; color: #111827; }
   .button { background: #374151; color: #fff; }
   .button.secondary { background: #1f2937; color: #e5e7eb; }
+}
+/* Improve date input usability/visibility */
+.input[type="date"] { color-scheme: light; color: #111827; }
+.input[type="date"]::-webkit-calendar-picker-indicator { filter: none; opacity: 0.7; }
+
+/* === Auth layout: desktop split, mobile single === */
+.auth-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  background: #ffffff; /* whole screen white on desktop */
+}
+.auth-left {
+  flex: 1 1 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: #ffffff;
+}
+.auth-right {
+  flex: 1 1 50%;
+  padding: 10px 0; /* 10px gap top & bottom */
+}
+
+.hero-image {
+  width: 100%;
+  height: calc(100% - 20px); /* fill area minus 10px top + 10px bottom */
+  background: url('/assign.jpg') center/cover no-repeat;
+  border-radius: 12px; /* optional, looks nicer */
+}
+
+@media (max-width: 768px) {
+  .auth-layout { flex-direction: column; }
+  .auth-right { display: none; }
+  .auth-left { padding: 24px; }
+}
+
+/* === Sign Up screen styles (from ui.md) === */
+.signup-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  padding: 24px;
+}
+
+/* Dashboard (post-auth) styles */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 16px;
+}
+.brand { display: flex; align-items: center; gap: 10px; }
+.logo-circle.small { width: 28px; height: 28px; border-radius: 9999px; background: url('/icon.png') center/cover no-repeat; }
+.nav-title { font-weight: 600; color: #111827; }
+.link-button { background: transparent; border: none; color: #007bff; cursor: pointer; font-weight: 600; }
+
+.welcome-card { display: grid; gap: 4px; }
+.welcome-heading { font-size: 20px; font-weight: 800; color: #111827; }
+.welcome-subtext { color: #6b7280; }
+
+.section-heading { margin: 16px 0 8px; font-size: 18px; font-weight: 700; color: #111827; }
+.notes-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.note-item { box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+.note-row { color :#111827; display: flex; justify-content: space-between; align-items: center; }
+.note-content { color :#111827;  white-space: pre-wrap; margin-top: 6px; }
+.note-meta { color: #6b7280; font-size: 12px; margin-top: 6px; }
+
+.signup-card {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+
+.signup-header { text-align: center; margin-bottom: 16px; }
+.logo-circle {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 8px;
+  border-radius: 9999px;
+  background: url('/icon.png') center/cover no-repeat;
+}
+.app-name { font-weight: 800; color: #111827; margin-bottom: 4px; }
+.title { font-size: 28px; line-height: 1.2; font-weight: 800; color: #111827; margin: 4px 0; }
+.subtitle { color: #6b7280; margin: 0 0 8px; }
+
+.field-label { display: block; font-size: 14px; color: #111827; margin: 12px 0 6px; }
+
+.input.rounded { border-radius: 12px; padding: 12px; border: 1px solid #d1d5db; width: 90%; }
+.input-with-icon { position: relative; }
+.left-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #6b7280; pointer-events: none; }
+.with-icon { padding-left: 36px; }
+
+.button.primary { background: #007bff; color: #ffffff; border: none; }
+.button.wide { width: 96%; padding: 12px 16px; border-radius: 12px; margin-top: 16px; }
+
+/* OTP field wrapper to show active blue border */
+.otp-wrapper { position: relative; display: flex; align-items: center; border: 1px solid #d1d5db; border-radius: 12px; padding-right: 8px; }
+.otp-wrapper.active { border-color: #007bff; }
+.otp-input { border: none; outline: none; width: 100%; padding: 12px; letter-spacing: 4px; border-radius: 12px; }
+.icon-button { background: transparent; border: none; cursor: pointer; font-size: 18px; color: #6b7280; }
+
+.footer-text { text-align: center; color: #374151; font-size: 14px; margin-top: 16px; }
+.footer-text .link { color: #007bff; text-decoration: underline; }
+
+/* Keep autofilled inputs white (Chrome, Safari, Edge) */
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+  box-shadow: 0 0 0px 1000px #ffffff inset !important;
+  -webkit-text-fill-color: #111827 !important;
+  caret-color: #111827;
+  border-color: #d1d5db !important;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+/* Firefox */
+.input:-moz-autofill {
+  box-shadow: 0 0 0px 1000px #ffffff inset !important;
+  color: #111827 !important;
+  caret-color: #111827;
+  border-color: #d1d5db !important;
 }

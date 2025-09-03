@@ -3,6 +3,7 @@ import './App.css'
 import { useAuth } from './contexts/AuthContext'
 import AuthPage from './pages/Auth'
 import HomePage from './pages/Home'
+import SignInPage from './pages/SignIn'
 
 function App() {
   const { user, loading } = useAuth()
@@ -14,6 +15,7 @@ function App() {
       {!user ? (
         <>
           <Route path="/auth" element={<AuthPage />} />
+          <Route path="/signin" element={<SignInPage />} />
           <Route path="*" element={<Navigate to="/auth" replace />} />
         </>
       ) : (
