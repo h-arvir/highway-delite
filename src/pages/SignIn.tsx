@@ -22,7 +22,7 @@ export default function SignInPage() {
   const requestOtp = async () => {
     setError(null)
     const parsed = emailSchema.safeParse(email)
-    if (!parsed.success) return setError(parsed.error.errors[0]?.message ?? 'Invalid email')
+    if (!parsed.success) return setError(parsed.error.issues[0]?.message ?? 'Invalid email')
 
     setLoading(true)
     const { error } = await supabase.auth.signInWithOtp({
@@ -37,9 +37,9 @@ export default function SignInPage() {
   const verifyOtp = async () => {
     setError(null)
     const parsedEmail = emailSchema.safeParse(email)
-    if (!parsedEmail.success) return setError(parsedEmail.error.errors[0]?.message ?? 'Invalid email')
+    if (!parsedEmail.success) return setError(parsedEmail.error.issues[0]?.message ?? 'Invalid email')
     const parsedOtp = otpSchema.safeParse(otp)
-    if (!parsedOtp.success) return setError(parsedOtp.error.errors[0]?.message ?? 'Invalid OTP')
+    if (!parsedOtp.success) return setError(parsedOtp.error.issues[0]?.message ?? 'Invalid OTP')
 
     setLoading(true)
     const { error } = await supabase.auth.verifyOtp({ email, token: otp, type: 'email' })
