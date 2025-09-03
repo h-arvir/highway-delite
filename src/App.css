@@ -135,3 +135,23 @@
 
 .footer-text { text-align: center; color: #374151; font-size: 14px; margin-top: 16px; }
 .footer-text .link { color: #007bff; text-decoration: underline; }
+
+/* Keep autofilled inputs white (Chrome, Safari, Edge) */
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+  box-shadow: 0 0 0px 1000px #ffffff inset !important;
+  -webkit-text-fill-color: #111827 !important;
+  caret-color: #111827;
+  border-color: #d1d5db !important;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+/* Firefox */
+.input:-moz-autofill {
+  box-shadow: 0 0 0px 1000px #ffffff inset !important;
+  color: #111827 !important;
+  caret-color: #111827;
+  border-color: #d1d5db !important;
+}

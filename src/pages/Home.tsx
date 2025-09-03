@@ -127,7 +127,13 @@ export default function HomePage() {
               <div className="note-row">
                 <strong>{n.title}</strong>
                 <button className="icon-button" onClick={() => deleteNote(n.id)} title="Delete note" aria-label="Delete note">
-                  🗑️
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <polyline points="3 6 5 6 21 6" />
+                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                    <path d="M10 11v6" />
+                    <path d="M14 11v6" />
+                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+                  </svg>
                 </button>
               </div>
               <div className="note-content">{n.content}</div>

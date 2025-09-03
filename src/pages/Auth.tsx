@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { z } from 'zod'
 import { supabase } from '../lib/supabaseClient'
+import { RiEyeLine, RiEyeOffLine } from 'react-icons/ri'
 
 const emailSchema = z.string().email('Enter a valid email')
 const otpSchema = z
@@ -134,7 +135,7 @@ export default function AuthPage() {
                     aria-label={otpVisible ? 'Hide OTP' : 'Show OTP'}
                     onClick={() => setOtpVisible((v) => !v)}
                   >
-                    {otpVisible ? '🙈' : '👁️'}
+                    {otpVisible ? <RiEyeOffLine /> : <RiEyeLine />}
                   </button>
                 </div>
               </>
