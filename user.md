@@ -1,4 +1,4 @@
-# Deploying Delite (Vite + React + Supabase) to Vercel
+
 
 ## 1) Prerequisites
 - **Vercel account**: https://vercel.com/
