@@ -91,8 +91,8 @@
 .section-heading { margin: 16px 0 8px; font-size: 18px; font-weight: 700; color: #111827; }
 .notes-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
 .note-item { box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
-.note-row { display: flex; justify-content: space-between; align-items: center; }
-.note-content { white-space: pre-wrap; margin-top: 6px; }
+.note-row { color :#111827; display: flex; justify-content: space-between; align-items: center; }
+.note-content { color :#111827;  white-space: pre-wrap; margin-top: 6px; }
 .note-meta { color: #6b7280; font-size: 12px; margin-top: 6px; }
 
 .signup-card {
