@@ -25,36 +25,47 @@ export default function AuthPage() {
   const [loading, setLoading] = useState(false)
 
   const requestOtp = async () => {
-    setError(null)
-    const parsed = emailSchema.safeParse(email)
-    if (!parsed.success) return setError(parsed.error.errors[0]?.message ?? 'Invalid email')
-
-    // NOTE: Name & DOB are collected here per UI, but not yet persisted.
-    // You can store them to your profile table after successful sign-in.
-
-    setLoading(true)
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: undefined },
-    })
-    setLoading(false)
-    if (error) return setError(error.message)
-    setOtpRequested(true)
+  setError(null)
+  const parsed = emailSchema.safeParse(email)
+  if (!parsed.success) {
+    const firstIssue = parsed.error.issues[0]
+    return setError(firstIssue?.message ?? 'Invalid email')
   }
 
-  const verifyOtp = async () => {
-    setError(null)
-    const parsedEmail = emailSchema.safeParse(email)
-    if (!parsedEmail.success) return setError(parsedEmail.error.errors[0]?.message ?? 'Invalid email')
-    const parsedOtp = otpSchema.safeParse(otp)
-    if (!parsedOtp.success) return setError(parsedOtp.error.errors[0]?.message ?? 'Invalid OTP')
+  // NOTE: Name & DOB are collected here per UI, but not yet persisted.
+  // You can store them to your profile table after successful sign-in.
 
-    setLoading(true)
-    const { error } = await supabase.auth.verifyOtp({ email, token: otp, type: 'email' })
-    setLoading(false)
-    if (error) return setError(error.message)
-    // On success, supabase sets session; router will redirect from App
+  setLoading(true)
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+    options: { emailRedirectTo: undefined },
+  })
+  setLoading(false)
+  if (error) return setError(error.message)
+  setOtpRequested(true)
+}
+
+const verifyOtp = async () => {
+  setError(null)
+
+  const parsedEmail = emailSchema.safeParse(email)
+  if (!parsedEmail.success) {
+    const firstIssue = parsedEmail.error.issues[0]
+    return setError(firstIssue?.message ?? 'Invalid email')
   }
+
+  const parsedOtp = otpSchema.safeParse(otp)
+  if (!parsedOtp.success) {
+    const firstIssue = parsedOtp.error.issues[0]
+    return setError(firstIssue?.message ?? 'Invalid OTP')
+  }
+
+  setLoading(true)
+  const { error } = await supabase.auth.verifyOtp({ email, token: otp, type: 'email' })
+  setLoading(false)
+  if (error) return setError(error.message)
+  // On success, supabase sets session; router will redirect from App
+}
 
   const signInLink = (
     <div className="footer-text">

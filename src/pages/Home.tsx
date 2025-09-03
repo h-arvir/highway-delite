@@ -41,19 +41,28 @@ export default function HomePage() {
   }
 
   const createNote = async () => {
-    setError(null)
-    const parsed = noteSchema.safeParse({ title, content })
-    if (!parsed.success) return setError(parsed.error.errors[0]?.message ?? 'Invalid input')
+  setError(null)
 
-    setLoading(true)
-    const { error } = await supabase.from('notes').insert({ title, content, user_id: user!.id })
-    setLoading(false)
-    if (error) return setError(error.message)
-    setTitle('')
-    setContent('')
-    await fetchNotes()
-    setShowComposer(false)
+  const parsed = noteSchema.safeParse({ title, content })
+  if (!parsed.success) {
+    const firstIssue = parsed.error.issues[0]
+    return setError(firstIssue?.message ?? 'Invalid input')
   }
+
+  setLoading(true)
+  const { error } = await supabase
+    .from('notes')
+    .insert({ title, content, user_id: user!.id })
+  setLoading(false)
+
+  if (error) return setError(error.message)
+
+  setTitle('')
+  setContent('')
+  await fetchNotes()
+  setShowComposer(false)
+}
+
 
   const deleteNote = async (id: string) => {
     setError(null)
